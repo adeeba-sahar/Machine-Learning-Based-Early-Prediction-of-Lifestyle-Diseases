@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aagahi — Know what's ahead</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14231F;
+    --surface:#1C2F29;
+    --surface-2:#233A33;
+    --border:#2E453D;
+    --text:#F1EDE4;
+    --muted:#9CAFA7;
+    --amber:#E8A33D;
+    --sage:#6FA98A;
+    --coral:#D96C5B;
+    --coral-dim:#B85A4C;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Lora',serif;
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  a{color:inherit;}
+
+  /* ---------- Header ---------- */
+  header{
+    padding:28px 0 20px;
+    border-bottom:1px solid var(--border);
+  }
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  .brand-mark{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--amber);
+    flex:none;
+    align-self:center;
+  }
+  .brand-name{font-family:'Lora',serif;font-size:22px;font-weight:600;}
+  .brand-tagline{color:var(--muted);font-size:14px;}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:64px 0 48px;}
+  .hero h1{
+    font-size:clamp(30px,5vw,42px);
+    line-height:1.15;
+    max-width:520px;
+  }
+  .hero p{
+    color:var(--muted);
+    font-size:17px;
+    max-width:480px;
+    margin-top:18px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--amber);
+    color:#1A1408;
+    border:none;
+    padding:14px 26px;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:28px;
+    font-family:'Inter',sans-serif;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .btn:hover{background:#F0B65C;}
+  .btn:active{transform:scale(0.98);}
+  .btn-ghost{
+    background:transparent;
+    color:var(--text);
+    border:1px solid var(--border);
+  }
+  .btn-ghost:hover{background:var(--surface-2);}
+
+  .disclaimer-strip{
+    margin-top:22px;
+    font-size:13px;
+    color:var(--muted);
+    border-left:2px solid var(--border);
+    padding-left:12px;
+    max-width:480px;
+  }
+
+  /* ---------- Sections toggle ---------- */
+  section{display:none;padding:48px 0 80px;}
+  section.active{display:block;}
+
+  /* ---------- Questionnaire ---------- */
+  .progress{
+    display:flex;
+    gap:6px;
+    margin-bottom:36px;
+  }
+  .progress-seg{
+    height:3px;
+    flex:1;
+    background:var(--border);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .progress-seg.done{background:var(--amber);}
+
+  .step-label{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:6px;
+  }
+  .step-title{font-size:24px;margin-bottom:28px;}
+
+  .field{margin-bottom:22px;}
+  .field label{
+    display:block;
+    font-size:14px;
+    margin-bottom:8px;
+    color:var(--text);
+  }
+  .field .hint{color:var(--muted);font-size:12.5px;margin-top:6px;}
+
+  input[type=number], input[type=text]{
+    width:100%;
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:12px 14px;
+    border-radius:8px;
+    font-size:15px;
+    font-family:'Inter',sans-serif;
+  }
+  input:focus{outline:2px solid var(--amber);outline-offset:1px;}
+
+  .choice-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .choice{
+    flex:1;
+    min-width:90px;
+    text-align:center;
+    padding:12px 10px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:var(--surface);
+    cursor:pointer;
+    font-size:14px;
+    user-select:none;
+    transition:border-color .1s ease, background .1s ease;
+  }
+  .choice.selected{
+    border-color:var(--amber);
+    background:var(--surface-2);
+    box-shadow: inset 0 0 0 1px var(--amber);
+  }
+  .choice:focus-visible{outline:2px solid var(--amber);}
+
+  .scale-row{display:flex;gap:8px;}
+  .scale-btn{
+    flex:1;
+    text-align:center;
+    padding:12px 4px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:var(--surface);
+    cursor:pointer;
+    font-size:14px;
+  }
+  .scale-btn.selected{border-color:var(--amber);background:var(--surface-2);box-shadow: inset 0 0 0 1px var(--amber);}
+
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:36px;
+  }
+
+  /* ---------- Results ---------- */
+  .results-header{margin-bottom:8px;}
+  .results-sub{color:var(--muted);font-size:15px;margin-bottom:32px;}
+
+  .risk-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px 22px;
+    margin-bottom:14px;
+  }
+  .risk-card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+  }
+  .risk-name{font-size:16px;font-weight:600;}
+  .risk-pct{font-family:'Lora',serif;font-size:26px;}
+  .risk-meta{color:var(--muted);font-size:13px;margin-top:4px;}
+  .risk-bar-track{
+    height:6px;background:var(--surface-2);border-radius:6px;margin-top:14px;overflow:hidden;
+  }
+  .risk-bar-fill{height:100%;border-radius:6px;}
+  .badge{
+    display:inline-block;
+    font-size:12px;
+    padding:3px 10px;
+    border-radius:20px;
+    margin-top:10px;
+    font-weight:600;
+  }
+  .badge.below{background:rgba(111,169,138,0.18);color:var(--sage);}
+  .badge.avg{background:rgba(232,163,61,0.14);color:var(--amber);}
+  .badge.elevated{background:rgba(217,108,91,0.16);color:var(--coral);}
+  .badge.high{background:rgba(217,108,91,0.28);color:#F2A296;}
+
+  .section-divider{
+    margin:44px 0 24px;
+    border:none;
+    border-top:1px solid var(--border);
+  }
+
+  .chart-legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);}
+  .legend-dot{width:9px;height:9px;border-radius:50%;}
+
+  .chart-box{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px;
+  }
+
+  .note{
+    color:var(--muted);
+    font-size:13.5px;
+    margin-top:24px;
+    line-height:1.6;
+  }
+
+  footer{
+    border-top:1px solid var(--border);
+    padding:28px 0 40px;
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  @media (max-width:480px){
+    .choice{min-width:70px;font-size:13px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Aagahi</span>
+    </div>
+    <div class="brand-tagline">Lifestyle-based future health risk awareness</div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section id="section-hero" class="active">
+  <div class="wrap hero">
+    <h1>What could your habits today mean for your health years from now?</h1>
+    <p>Answer a short set of questions about your daily life, and see how your risk of common lifestyle-related conditions compares to average — now, and as you get older.</p>
+    <button class="btn" onclick="goTo('section-quiz')">Start &nbsp;→</button>
+    <div class="disclaimer-strip">
+      This is a screening and awareness tool, not a medical diagnosis. It estimates
+      patterns from population health data — always speak to a doctor for a real
+      clinical assessment.
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUESTIONNAIRE ================= -->
+<section id="section-quiz">
+  <div class="wrap">
+    <div class="progress" id="progress-track"></div>
+    <div id="quiz-steps"></div>
+  </div>
+</section>
+
+<!-- ================= RESULTS ================= -->
+<section id="section-results">
+  <div class="wrap">
+    <div class="results-header"><h2>Your current risk profile</h2></div>
+    <div class="results-sub">Compared to the average person in the population data used to build this model.</div>
+    <div id="risk-cards"></div>
+
+    <hr class="section-divider">
+    <h2>Your risk trajectory</h2>
+    <div class="results-sub">If your current habits stay exactly the same as you age.</div>
+
+    <div class="chart-legend" id="chart-legend"></div>
+    <div class="chart-box">
+      <svg id="chart-svg" viewBox="0 0 640 320" width="100%"></svg>
+    </div>
+
+    <p class="note">
+      This trajectory compares your current habits to people with similar lifestyles
+      observed at different ages in the dataset. It assumes your habits don't change —
+      which means the reverse is also true: changing your habits now can change this path.
+    </p>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="restart()">Start over</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Aagahi is a prototype awareness tool built for demonstration purposes. Predictions are based on general population data and general clinical guidance, not on data specific to any single country or community.
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   TRAINED MODEL WEIGHTS (exported from scikit-learn)
+   ========================================================= */
+const MODEL = {
+  "Diabetes": {
+    "features": ["BMI","Smoker","PhysActivity","Fruits","Veggies","HvyAlcoholConsump","GenHlth","MentHlth","PhysHlth","DiffWalk","Sex","Age","Education","Income","AnyHealthcare","NoDocbcCost","CholCheck","HighChol"],
+    "coefficients": [0.08287735891746333,-0.0018730454173288061,-0.04859193530567964,-0.055705629621642744,-0.03393113578977401,-0.5806756067771137,0.6062747483426558,-0.0020670124684660385,-0.006434816390760532,0.11294799310372215,0.30034156886529084,0.18847417511583658,-0.04710556184311255,-0.06955867148988927,0.07269605548728185,0.11455770870760489,1.3479176218973667,0.7184432021679565],
+    "intercept": -6.954471388904827
+  },
+  "HighBP": {
+    "features": ["BMI","Smoker","PhysActivity","Fruits","Veggies","HvyAlcoholConsump","GenHlth","MentHlth","PhysHlth","DiffWalk","Sex","Age","Education","Income","AnyHealthcare","NoDocbcCost","CholCheck","HighChol"],
+    "coefficients": [0.06767665053065165,0.029612840283147045,-0.03218493956009343,-0.05010976265168765,-0.04946677018788187,0.296851683692282,0.3846454991533943,0.001173804897538919,-0.005018607547417713,0.17726030732703235,0.30659061628486356,0.2408744615797186,-0.04291698588279168,-0.04289680304382103,0.12454439381460737,0.11718985548249887,0.8243792227584708,0.7706808681566352],
+    "intercept": -5.786754306212635
+  },
+  "Stroke": {
+    "features": ["BMI","Smoker","PhysActivity","Fruits","Veggies","HvyAlcoholConsump","GenHlth","MentHlth","PhysHlth","DiffWalk","Sex","Age","Education","Income","AnyHealthcare","NoDocbcCost","CholCheck","HighChol"],
+    "coefficients": [-0.006457686224125047,0.24441211336215699,-0.01929568986220475,0.06653955333535098,-0.1673425830259386,-0.10172719301990191,0.44346246633421205,0.007839691372689552,0.008168862022504206,0.6428310304448819,0.19297799889290668,0.2281326826762073,0.01998189424854042,-0.11935611190712433,0.026575710702715995,0.23902432499752038,0.5148498340774263,0.3859357707801843],
+    "intercept": -3.791729165534172
+  },
+  "HeartDiseaseorAttack": {
+    "features": ["BMI","Smoker","PhysActivity","Fruits","Veggies","HvyAlcoholConsump","GenHlth","MentHlth","PhysHlth","DiffWalk","Sex","Age","Education","Income","AnyHealthcare","NoDocbcCost","CholCheck","HighChol"],
+    "coefficients": [0.010873552614043467,0.39039758117292583,0.03872680474776318,0.004282877168624137,0.029277155311814827,-0.29765271050796255,0.567368988963686,0.005919525420062745,0.0029856506335863573,0.41031947835538657,0.8451225590083177,0.3082548774737584,-0.0031029953288589564,-0.07266654370346447,-0.055653396458679845,0.30479413104750624,0.6400414148271012,0.7731978994397409],
+    "intercept": -6.223612766398142
+  }
+};
+const BASE_RATES = {"Diabetes":15.758830022075054,"HighBP":42.90011037527594,"Stroke":4.057079785556607,"HeartDiseaseorAttack":9.418558814254178};
+const LABELS = {"Diabetes":"Diabetes","HighBP":"Hypertension","Stroke":"Stroke","HeartDiseaseorAttack":"Heart Disease"};
+const COLORS = {"Diabetes":"#E8A33D","HighBP":"#6FA98A","Stroke":"#D96C5B","HeartDiseaseorAttack":"#8AA6C9"};
+
+function sigmoid(z){ return 1/(1+Math.exp(-z)); }
+
+function predict(target, featureValues){
+  const m = MODEL[target];
+  let z = m.intercept;
+  m.features.forEach((f,i)=>{ z += m.coefficients[i] * featureValues[f]; });
+  return sigmoid(z) * 100;
+}
+
+function predictAll(featureValues){
+  const out = {};
+  Object.keys(MODEL).forEach(t => out[t] = predict(t, featureValues));
+  return out;
+}
+
+function ageToCategory(age){
+  const bins = [[18,24,1],[25,29,2],[30,34,3],[35,39,4],[40,44,5],[45,49,6],[50,54,7],[55,59,8],[60,64,9],[65,69,10],[70,74,11],[75,79,12],[80,120,13]];
+  for(const [lo,hi,cat] of bins){ if(age>=lo && age<=hi) return cat; }
+  return 1;
+}
+
+function bmiFrom(heightCm, weightKg){
+  const h = heightCm/100;
+  return Math.round((weightKg/(h*h))*10)/10;
+}
+
+/* =========================================================
+   QUESTIONNAIRE DEFINITION
+   ========================================================= */
+const answers = {};
+
+const steps = [
+  {
+    title: "About you",
+    fields: [
+      {key:"age", type:"number", label:"What is your age (in years)?", placeholder:"e.g. 22"},
+      {key:"sex", type:"choice", label:"Sex", options:[["Female",0],["Male",1]]},
+      {key:"height", type:"number", label:"Height (cm)", placeholder:"e.g. 165"},
+      {key:"weight", type:"number", label:"Weight (kg)", placeholder:"e.g. 60"}
+    ]
+  },
+  {
+    title: "Daily habits",
+    fields: [
+      {key:"Smoker", type:"choice", label:"Do you currently smoke?", options:[["No",0],["Yes",1]]},
+      {key:"PhysActivity", type:"choice", label:"Have you exercised in the past 30 days (outside of your job)?", options:[["No",0],["Yes",1]]},
+      {key:"Fruits", type:"choice", label:"Do you eat fruit at least once a day?", options:[["No",0],["Yes",1]]},
+      {key:"Veggies", type:"choice", label:"Do you eat vegetables at least once a day?", options:[["No",0],["Yes",1]]},
+      {key:"HvyAlcoholConsump", type:"choice", label:"Do you drink heavily? (men: 14+/week, women: 7+/week)", options:[["No",0],["Yes",1]]}
+    ]
+  },
+  {
+    title: "Your health today",
+    fields: [
+      {key:"DiffWalk", type:"choice", label:"Do you have serious difficulty walking or climbing stairs?", options:[["No",0],["Yes",1]]},
+      {key:"HighChol", type:"choice", label:"Has a doctor told you that you have high cholesterol?", options:[["No",0],["Yes",1]]},
+      {key:"CholCheck", type:"choice", label:"Have you had your cholesterol checked in the past 5 years?", options:[["No",0],["Yes",1]]},
+      {key:"GenHlth", type:"scale", label:"How would you rate your general health?", options:[["Excellent",1],["Very good",2],["Good",3],["Fair",4],["Poor",5]]},
+      {key:"MentHlth", type:"number", label:"In the past 30 days, how many days was your mental health not good?", placeholder:"0–30"},
+      {key:"PhysHlth", type:"number", label:"In the past 30 days, how many days was your physical health not good?", placeholder:"0–30"}
+    ]
+  },
+  {
+    title: "Background",
+    fields: [
+      {key:"AnyHealthcare", type:"choice", label:"Do you currently have any form of health insurance/coverage?", options:[["No",0],["Yes",1]]},
+      {key:"NoDocbcCost", type:"choice", label:"Was there a time in the past year you needed a doctor but couldn't afford it?", options:[["No",0],["Yes",1]]},
+      {key:"Education", type:"scale", label:"Education level", options:[["None",1],["Elementary",2],["Some HS",3],["HS grad",4],["Some college",5],["Graduate",6]]},
+      {key:"Income", type:"scale", label:"Household income bracket (1 = lowest, 8 = highest)", options:[["1",1],["2",2],["3",3],["4",4],["5",5],["6",6],["7",7],["8",8]]}
+    ]
+  }
+];
+
+let currentStep = 0;
+
+function renderProgress(){
+  const track = document.getElementById('progress-track');
+  track.innerHTML = '';
+  steps.forEach((s,i)=>{
+    const seg = document.createElement('div');
+    seg.className = 'progress-seg' + (i<=currentStep ? ' done':'');
+    track.appendChild(seg);
+  });
+}
+
+function renderStep(){
+  renderProgress();
+  const container = document.getElementById('quiz-steps');
+  const step = steps[currentStep];
+  let html = `<div class="step-label">Step ${currentStep+1} of ${steps.length}</div>`;
+  html += `<div class="step-title">${step.title}</div>`;
+
+  step.fields.forEach(f=>{
+    html += `<div class="field"><label>${f.label}</label>`;
+    if(f.type === 'number'){
+      html += `<input type="number" id="f-${f.key}" placeholder="${f.placeholder||''}" value="${answers[f.key] ?? ''}">`;
+    } else if(f.type === 'choice'){
+      html += `<div class="choice-row">`;
+      f.options.forEach(([label,val])=>{
+        const sel = answers[f.key] === val ? ' selected' : '';
+        html += `<div class="choice${sel}" tabindex="0" onclick="selectChoice('${f.key}', ${val}, this)">${label}</div>`;
+      });
+      html += `</div>`;
+    } else if(f.type === 'scale'){
+      html += `<div class="scale-row">`;
+      f.options.forEach(([label,val])=>{
+        const sel = answers[f.key] === val ? ' selected' : '';
+        html += `<div class="scale-btn${sel}" tabindex="0" onclick="selectChoice('${f.key}', ${val}, this, true)">${label}</div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+
+  html += `<div class="nav-row">`;
+  html += currentStep>0 ? `<button class="btn btn-ghost" onclick="prevStep()">← Back</button>` : `<span></span>`;
+  html += currentStep < steps.length-1
+    ? `<button class="btn" onclick="nextStep()">Continue →</button>`
+    : `<button class="btn" onclick="submitQuiz()">See my results →</button>`;
+  html += `</div>`;
+
+  container.innerHTML = html;
+}
+
+function selectChoice(key, val, el, isScale){
+  answers[key] = val;
+  const parent = el.parentElement;
+  [...parent.children].forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function collectNumberInputs(){
+  const step = steps[currentStep];
+  step.fields.forEach(f=>{
+    if(f.type === 'number'){
+      const el = document.getElementById('f-'+f.key);
+      if(el) answers[f.key] = parseFloat(el.value);
+    }
+  });
+}
+
+function nextStep(){
+  collectNumberInputs();
+  currentStep++;
+  renderStep();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function prevStep(){
+  collectNumberInputs();
+  currentStep--;
+  renderStep();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function submitQuiz(){
+  collectNumberInputs();
+  const bmi = bmiFrom(answers.height, answers.weight);
+  const ageCat = ageToCategory(answers.age);
+
+  const featureValues = {
+    BMI: bmi,
+    Smoker: answers.Smoker,
+    PhysActivity: answers.PhysActivity,
+    Fruits: answers.Fruits,
+    Veggies: answers.Veggies,
+    HvyAlcoholConsump: answers.HvyAlcoholConsump,
+    GenHlth: answers.GenHlth,
+    MentHlth: answers.MentHlth,
+    PhysHlth: answers.PhysHlth,
+    DiffWalk: answers.DiffWalk,
+    Sex: answers.sex,
+    Age: ageCat,
+    Education: answers.Education,
+    Income: answers.Income,
+    AnyHealthcare: answers.AnyHealthcare,
+    NoDocbcCost: answers.NoDocbcCost,
+    CholCheck: answers.CholCheck,
+    HighChol: answers.HighChol
+  };
+
+  const risks = predictAll(featureValues);
+  renderResults(risks);
+  renderTrajectory(featureValues, answers.age);
+  goTo('section-results');
+}
+
+/* =========================================================
+   RESULTS RENDERING
+   ========================================================= */
+function riskLevel(pct, base){
+  const ratio = pct/base;
+  if(ratio < 0.7) return {label:'Below Average', cls:'below'};
+  if(ratio < 1.3) return {label:'Average', cls:'avg'};
+  if(ratio < 2.0) return {label:'Elevated', cls:'elevated'};
+  return {label:'High', cls:'high'};
+}
+
+function renderResults(risks){
+  const container = document.getElementById('risk-cards');
+  let html = '';
+  Object.keys(risks).forEach(key=>{
+    const pct = risks[key];
+    const base = BASE_RATES[key];
+    const level = riskLevel(pct, base);
+    const barColor = level.cls === 'below' ? 'var(--sage)' : level.cls === 'avg' ? 'var(--amber)' : 'var(--coral)';
+    const barWidth = Math.min(pct, 100);
+    html += `
+      <div class="risk-card">
+        <div class="risk-card-top">
+          <div class="risk-name">${LABELS[key]}</div>
+          <div class="risk-pct">${pct.toFixed(1)}%</div>
+        </div>
+        <div class="risk-meta">Population average: ${base.toFixed(1)}%</div>
+        <div class="risk-bar-track"><div class="risk-bar-fill" style="width:${barWidth}%;background:${barColor}"></div></div>
+        <div class="badge ${level.cls}">${level.label}</div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+/* =========================================================
+   TRAJECTORY CHART (hand-built SVG line chart)
+   ========================================================= */
+function renderTrajectory(featureValues, currentAge){
+  const ages = [];
+  let a = currentAge;
+  while(a <= 80){ ages.push(a); a += 10; }
+  if(ages[ages.length-1] !== 80 && currentAge < 80) ages.push(80);
+
+  const series = {};
+  Object.keys(MODEL).forEach(t => series[t] = []);
+
+  ages.forEach(age=>{
+    const fv = Object.assign({}, featureValues, {Age: ageToCategory(age)});
+    Object.keys(MODEL).forEach(t=>{
+      series[t].push(predict(t, fv));
+    });
+  });
+
+  // legend
+  const legend = document.getElementById('chart-legend');
+  legend.innerHTML = Object.keys(MODEL).map(t=>
+    `<div class="legend-item"><span class="legend-dot" style="background:${COLORS[t]}"></span>${LABELS[t]}</div>`
+  ).join('');
+
+  // chart geometry
+  const W = 640, H = 320, padL = 44, padR = 16, padT = 16, padB = 34;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+  const maxY = 100;
+
+  const xFor = (i) => padL + (i/(ages.length-1)) * plotW;
+  const yFor = (v) => padT + plotH - (v/maxY) * plotH;
+
+  let svg = '';
+
+  // grid lines + y labels
+  [0,25,50,75,100].forEach(v=>{
+    const y = yFor(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#2E453D" stroke-width="1"/>`;
+    svg += `<text x="${padL-8}" y="${y+4}" text-anchor="end" font-size="11" fill="#9CAFA7" font-family="Inter">${v}%</text>`;
+  });
+
+  // x labels
+  ages.forEach((age,i)=>{
+    const x = xFor(i);
+    svg += `<text x="${x}" y="${H-10}" text-anchor="middle" font-size="11" fill="#9CAFA7" font-family="Inter">Age ${age}</text>`;
+  });
+
+  // lines
+  Object.keys(series).forEach(t=>{
+    const pts = series[t].map((v,i)=> `${xFor(i)},${yFor(v)}`).join(' ');
+    svg += `<polyline points="${pts}" fill="none" stroke="${COLORS[t]}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+    series[t].forEach((v,i)=>{
+      svg += `<circle cx="${xFor(i)}" cy="${yFor(v)}" r="3.5" fill="${COLORS[t]}"/>`;
+    });
+  });
+
+  document.getElementById('chart-svg').innerHTML = svg;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+function goTo(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(id === 'section-quiz'){ renderStep(); }
+}
+
+function restart(){
+  Object.keys(answers).forEach(k=>delete answers[k]);
+  currentStep = 0;
+  goTo('section-hero');
+}
+</script>
+</body>
+</html>
